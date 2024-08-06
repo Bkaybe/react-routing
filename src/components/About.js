@@ -2,7 +2,7 @@ import React from 'react'
 
 function About() {
   return (
-    <div>About</div>
+    <div>Greatest of the greatest(I am the GOAT)</div>
   )
 }
 
