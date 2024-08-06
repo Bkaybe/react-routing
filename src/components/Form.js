@@ -1,62 +1,78 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Form({users, setUsers}) {
+function Form({ users, setUsers }) {
+  const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        name : "",
-        username : ""
-    })
+  const [formData, setFormData] = useState({
+    name: "",
+    username: "",
+  });
 
-    const handleOnchange = (event)=>{
-        const name = event.target.name
-        const value = event.target.value
+  const handleOnchange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
 
-        // updating state
-
-        setFormData({
-            ...formData, [name]: value
-        })
-    }
-
-const handleSubmit =(e)=> {
-    e.preventDefault()
-
-    fetch("http://localhost:3000/users", {
-        method : "POST",
-        headers : {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-        },
-        body : JSON.stringify(formData)
-    })
-    .then(res => res.json())
-    .then(user => setUsers([user, ...users]))
+    // updating state
 
     setFormData({
-        name : "",
-        username : ""
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(formData),
     })
-}
+      .then((res) => res.json())
+      .then((user) => setUsers([user, ...users]));
+
+    setFormData({
+      name: "",
+      username: "",
+    });
+
+    navigate("/");
+  };
 
   return (
-    <div className='form-wrapper'>
+    <div className="form-wrapper">
+      <div>
+        <h1>Post User</h1>
+      </div>
+      <form onSubmit={handleSubmit}>
         <div>
-            <h1>Post User</h1>
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter Name"
+            value={formData.name}
+            onChange={handleOnchange}
+          />
         </div>
-        <form onSubmit={handleSubmit}>
-            <div>
-                <input type='text' name='name' placeholder='Enter Name' value={formData.name} onChange={handleOnchange}/>
-            </div>
-            <div>
-                <input type='text' name='username' placeholder='Enter username' value={formData.username} onChange={handleOnchange}/>
-            </div>
-            <div>
-                <input type='submit' value="Submit"/>
-            </div>
-
-        </form>
+        <div>
+          <input
+            type="text"
+            name="username"
+            placeholder="Enter username"
+            value={formData.username}
+            onChange={handleOnchange}
+          />
+        </div>
+        <div>
+          <input type="submit" value="Submit" />
+        </div>
+      </form>
     </div>
-  )
+  );
 }
 
-export default Form
+export default Form;
